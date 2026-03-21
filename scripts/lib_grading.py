@@ -286,7 +286,8 @@ def _build_judge_prompt(task: Task, transcript_summary: str, rubric: str) -> str
         f"{transcript_summary}\n\n"
         "## Grading Rubric\n"
         f"{rubric}\n\n"
-        "Score each criterion from 0.0 to 1.0.\n\n"
+        "Score each criterion from 0.0 to 1.0.\n"
+        'The "total" field must also be between 0.0 and 1.0, and it must be the arithmetic mean of the criterion scores, not their sum.\n\n'
         "Respond with ONLY this JSON structure (no markdown, no code fences, no extra text):\n"
         '{"scores": {"criterion_name": 0.0}, "total": 0.0, "notes": "brief justification"}'
     )
@@ -428,6 +429,17 @@ def _normalize_judge_response(parsed: Dict[str, Any]) -> Dict[str, Any]:
         values = [v for v in result["scores"].values() if isinstance(v, (int, float))]
         if values:
             result["total"] = sum(values) / len(values)
+
+    # Some judge models return a summed total across criteria even though each
+    # criterion is scored on a 0..1 scale. Normalize that back to a 0..1 mean.
+    values = [v for v in result["scores"].values() if isinstance(v, (int, float))]
+    if (
+        values
+        and result["total"] is not None
+        and result["total"] > 1.0
+        and all(0.0 <= float(v) <= 1.0 for v in values)
+    ):
+        result["total"] = sum(values) / len(values)
     
     # Extract notes/justification
     if "notes" in parsed:
