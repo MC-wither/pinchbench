@@ -6,7 +6,7 @@ grading_type: automated
 timeout_seconds: 180
 workspace_files:
   - path: school-calendar.pdf
-    url: https://resources.finalsite.net/images/v1773845399/sasphsnet/rpsdm31z0zcix7pmra3q/js2026-2027Calendar-ListVersion.pdf
+    url: https://raw.githubusercontent.com/chad-kiloclaw/openclaw-workspace/master/mlk-elementary-2026-2027.pdf
 ---
 
 ## Prompt
