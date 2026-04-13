@@ -5,13 +5,13 @@ category: developer
 grading_type: automated
 timeout_seconds: 120
 workspace_files:
-  - source: assets/refactor/utils.py
+  - source: refactor/utils.py
     dest: utils.py
-  - source: assets/refactor/orders.py
+  - source: refactor/orders.py
     dest: orders.py
-  - source: assets/refactor/reports.py
+  - source: refactor/reports.py
     dest: reports.py
-  - source: assets/refactor/api.py
+  - source: refactor/api.py
     dest: api.py
 ---
 
